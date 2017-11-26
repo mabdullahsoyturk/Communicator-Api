@@ -21,21 +21,15 @@ Router.post("/", function (req,res) {
             res.json({success:false, message:"The user couldn't be found"});
         }else{
 
-            var house = new House({
-                name: req.body.name
+            House.findOne({
+                _id:req.params.hid
+            }, function (err, foundHouse) {
+                foundHouse.members.push(foundUser);
+                foundHouse.save();
+                foundUser.houses.push(house);
+                foundUser.save();
+                res.json({success:true, message:"You have successfully added a house member"});
             });
-
-            house.members.push(foundUser);
-
-            house.save(function (err) {
-                if(err){
-                    console.log(err);
-                }
-            });
-
-            foundUser.houses.push(house);
-            foundUser.save();
-            res.json({success:true, message:"You have successfully added a house"});
         }
     });
 
