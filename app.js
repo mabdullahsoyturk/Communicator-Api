@@ -13,6 +13,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
+app.get("/", function (req,res) {
+   res.send("Works");
+});
+
 app.use("/signup", signup);  //Sign up route without middleware for token check since the user doesn't sign in yet.
 /////////////////////////////////////////AUTH ROUTES////////////////////////////////////////////////////////////////////
 
