@@ -8,7 +8,7 @@ app.post("/", function (req,res) {
             res.json({success:false, message:"The user couldn't be added"});
         }else if(user){
             res.json({success:false, message:"The user already exists.", user_info:user});
-      0  }else{
+        }else{
             // create the User
             var newUser = new User({
                 first_name:req.body.first_name,
