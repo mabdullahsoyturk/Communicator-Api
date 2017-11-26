@@ -8,7 +8,7 @@ var express = require('express'),
     buy_mes    = require('./routes/buy_mes'),
     members    = require('./routes/members'),
     signup     = require('./routes/signup');
-mongoose.connect('mongodb://localhost/houseassistant');
+mongoose.connect('mongodb://muhammet:123@ds121716.mlab.com:21716/communicator');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
