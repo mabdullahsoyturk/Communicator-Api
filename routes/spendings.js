@@ -77,7 +77,7 @@ Router.post("/", function (req,res) {
             });
 
             console.log(spending.created_time.getTime());
-            //spending.created_time.setHours(spending.created_time.getHours() - 8800);
+            spending.created_time.setHours(spending.created_time.getHours() - 175);
 
             spending.save(function (err) {
                 if(err){
