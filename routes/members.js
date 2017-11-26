@@ -26,7 +26,7 @@ Router.post("/", function (req,res) {
             }, function (err, foundHouse) {
                 foundHouse.members.push(foundUser);
                 foundHouse.save();
-                foundUser.houses.push(house);
+                foundUser.houses.push(foundHouse);
                 foundUser.save();
                 res.json({success:true, message:"You have successfully added a house member"});
             });
