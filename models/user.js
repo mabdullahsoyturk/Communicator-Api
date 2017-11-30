@@ -3,8 +3,11 @@ var mongoose = require('mongoose');
 var UserSchema = new mongoose.Schema({
     first_name:     String,
     last_name:      String,
+    email:          String,
     facebook_id:    String,
     balance:    Number,
+    photo_url: String,
+    status: Number,
     houses: [
         {
         type: mongoose.Schema.Types.ObjectId,

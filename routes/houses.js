@@ -35,7 +35,7 @@ Router.post("/", function (req,res) {
 
             foundUser.houses.push(house);
             foundUser.save();
-            res.json({success:true, message:"You have successfully added a house"});
+            res.json({success:true, message:"You have successfully added a house", data:house});
         }
     });
 
@@ -49,7 +49,7 @@ Router.get("/:hid", function (req,res) {
         if(err){
             res.json({success:false, message:"The house couldn't be found"});
         }else{
-            res.json(foundHouse);
+            res.json({success:true, message: "The house was found", data: foundHouse});
         }
     });
 });
