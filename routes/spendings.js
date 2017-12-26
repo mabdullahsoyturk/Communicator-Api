@@ -51,7 +51,8 @@ Router.get("/", function (req,res) {
             if(err){
                 res.json({success:false, message:"The user couldn't be found"});
             }else{
-                res.json({success:true, message:"Here are your spendings", data:foundHouse.spendings});
+                res.json(foundHouse.spendings);
+                //res.json({success:true, message:"Here are your spendings", data:foundHouse.spendings});
             }
         });
     }

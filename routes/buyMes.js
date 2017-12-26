@@ -10,7 +10,8 @@ Router.get('/', function (req,res) {
         if(err){
             res.json({success:false, message:"The user couldn't be found"});
         }else{
-            res.json({success:true, message:"You got them all tiger", data:foundHouse.buyMes});
+            res.json(foundHouse.buyMes);
+            //res.json({success:true, message:"You got them all tiger", data:foundHouse.buyMes});
         }
     });
 });
