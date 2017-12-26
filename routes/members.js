@@ -9,7 +9,8 @@ Router.get("/",function (req,res) {
             res.json({success:false, message:"The user couldn't be found"});
         }else{
             console.log(req.params.hid);
-            res.json({success:true, message:"Here are the members", data:foundHouse.members});
+            res.json(foundHouse.members);
+            //res.json({success:true, message:"Here are the members", data:foundHouse.members});
         }
     })
 });

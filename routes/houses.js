@@ -55,7 +55,8 @@ Router.get("/:hid", function (req,res) {
         if(err){
             res.json({success:false, message:"The house couldn't be found"});
         }else{
-            res.json({success:true, message: "The house was found", data: foundHouse});
+            res.json(foundHouse);
+            //res.json({success:true, message: "The house was found", data: foundHouse});
         }
     });
 });
