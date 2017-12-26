@@ -14,14 +14,26 @@ Router.get('/', function (req,res) {
     })
 });
 
-Router.get('/:uid', function (req,res) {
-    User.findOne({facebook_id:req.params.uid}, function (err, foundUser) {
+Router.get('/:fid', function (req,res) {
+    User.findOne({facebook_id:req.params.fid}, function (err, foundUser) {
         if(err){
-            res.json({success:false, message:"The user couldn't be found"});
+            res.json({success:false, message:"The user couldn't be found!!!!!"});
         }else{
             res.json({success:true, data:foundUser});
         }
     })
+});
+
+Router.put('/:fid', function (req,res) {
+    User.findOne({facebook_id:req.params.fid}, function (err,foundUser) {
+       if(err){
+           res.json({success:false, message:"The user couldn't be found!"});
+       } else{
+           foundUser.house_id = req.body.house_id;
+           foundUser.save();
+           res.json({success:true, message:"The user updated"});
+       }
+    });
 });
 
 module.exports = Router;

@@ -4,25 +4,29 @@ var User = require('../models/user');
 var House = require('../models/house');
 
 Router.get("/",function (req,res) {
-    User.findById({_id:req.params.uid}).populate("houses").exec(function (err,foundUser) {
+    User.findOne({facebook_id:req.params.fid}).populate("houses").exec(function (err,foundUser) {
         if(err){
-            res.json({success:false, message:"The user couldn't be found"});
+            res.json({success:false, message:"The user couldn't be found!"});
         }else{
-            res.json(foundUser.houses);
+            console.log(foundUser);
+            res.json({success:true, message:"Here is the house", data:foundUser.houses});
         }
     })
 });
 
 Router.post("/", function (req,res) {
     User.findOne({
-        _id:req.params.uid
+        facebook_id:req.params.fid
     },function (err, foundUser) {
         if(err){
-            res.json({success:false, message:"The user couldn't be found"});
+            res.json({success:false, message:"The user couldn't be found!!!"});
         }else{
 
             var house = new House({
-                name: req.body.name
+                name: req.body.name,
+                id  : req.body.id,
+                facebook_id  : req.body.facebook_id,
+                created_time : req.body.created_time
             });
 
             house.members.push(foundUser);
@@ -32,6 +36,8 @@ Router.post("/", function (req,res) {
                     console.log(err);
                 }
             });
+
+            foundUser.house_id = req.body.house_id;
 
             foundUser.houses.push(house);
             foundUser.save();
@@ -44,7 +50,7 @@ Router.post("/", function (req,res) {
 
 Router.get("/:hid", function (req,res) {
     House.findOne({
-        _id:req.params.hid
+        id:req.params.hid
     },function (err,foundHouse) {
         if(err){
             res.json({success:false, message:"The house couldn't be found"});
@@ -56,7 +62,7 @@ Router.get("/:hid", function (req,res) {
 
 Router.post("/:hid", function (req,res) {
     House.findOne({
-        _id:req.params.hid
+        id:req.params.hid
     },function (err,foundHouse) {
         if(err){
             res.json({success:false, message:"The house couldn't be found"});

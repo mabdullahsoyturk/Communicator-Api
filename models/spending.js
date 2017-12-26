@@ -1,13 +1,13 @@
 var mongoose = require('mongoose');
 
 var SpendingSchema = new mongoose.Schema({
-    name: String,
-    description: String,
-    cost: Number,
-    created_time: {
-        type:Date,
-        default: Date.now
-    }
+    id          : String,
+    icon_id     : String,
+    name        : String,
+    cost        : Number,
+    facebook_id : String,
+    house_id    : String,
+    created_time: String
 });
 
 module.exports = mongoose.model('Spending', SpendingSchema);

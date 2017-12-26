@@ -6,7 +6,7 @@ var express = require('express'),
     users      = require('./routes/users'),
     houses     = require('./routes/houses'),
     spendings  = require('./routes/spendings'),
-    buy_mes    = require('./routes/buy_mes'),
+    buy_mes    = require('./routes/buyMes'),
     members    = require('./routes/members'),
     signup     = require('./routes/signup');
 
@@ -53,10 +53,10 @@ app.use("/signup", signup);  //Sign up route without middleware for token check 
 var Router = express.Router();
 
 Router.use("/users", users);
-Router.use("/users/:uid/houses", houses);
-Router.use("/users/:uid/houses/:hid/spendings", spendings);
-Router.use("/users/:uid/houses/:hid/buy_mes", buy_mes);
-Router.use("/users/:uid/houses/:hid/members", members);
+Router.use("/users/:fid/houses", houses);
+Router.use("/users/:fid/houses/:hid/spendings", spendings);
+Router.use("/users/:fid/houses/:hid/buy_mes", buy_mes);
+Router.use("/users/:fid/houses/:hid/members", members);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

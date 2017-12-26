@@ -7,15 +7,20 @@ app.post("/", function (req,res) {
         if(err){
             res.json({success:false, message:"The user couldn't be added"});
         }else if(user){
+            console.log(user);
+            console.log(req.body);
             res.json({success:false, message:"The user already exists.", data:user});
         }else{
             // create the User
             var newUser = new User({
-                first_name:req.body.first_name,
-                last_name :req.body.last_name,
-                email     : req.body.email,
-                balance: 0,
-                facebook_id:req.body.facebook_id
+                first_name  : req.body.first_name,
+                last_name   : req.body.last_name,
+                balance     : 0,
+                status      : 1,
+                house_id    : req.body.house_id,
+                photo_url   : req.body.photo_url,
+                facebook_id : req.body.facebook_id,
+                id          : req.body.id
             });
 
             newUser.save(function(err) {
@@ -28,5 +33,6 @@ app.post("/", function (req,res) {
         }
     });
 });
+
 
 module.exports = app;

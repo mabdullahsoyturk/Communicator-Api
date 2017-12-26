@@ -1,7 +1,9 @@
 var mongoose = require('mongoose');
 
 var HouseSchema = new mongoose.Schema({
+    id: String,
     name: String,
+    facebook_id: String,
     members: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -14,16 +16,13 @@ var HouseSchema = new mongoose.Schema({
             ref: 'Spending'
         }
     ],
-    buy_mes: [
+    buyMes: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'BuyMe'
         }
     ],
-    created_time: {
-        type:Date,
-        default: Date.now
-    }
+    created_time: String
 });
 
 module.exports = mongoose.model('House', HouseSchema);

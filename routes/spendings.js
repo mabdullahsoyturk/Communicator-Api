@@ -47,11 +47,11 @@ Router.get("/", function (req,res) {
     }
 
     else{
-        House.findById({_id:req.params.hid}).populate("spendings").exec(function (err,foundHouse) {
+        House.findOne({id:req.params.hid}).populate("spendings").exec(function (err,foundHouse) {
             if(err){
                 res.json({success:false, message:"The user couldn't be found"});
             }else{
-                res.json(foundHouse.spendings);
+                res.json({success:true, message:"Here are your spendings", data:foundHouse.spendings});
             }
         });
     }
@@ -59,42 +59,33 @@ Router.get("/", function (req,res) {
 
 Router.post("/", function (req,res) {
     User.findOne({
-        _id:req.params.uid
+        facebook_id:req.params.fid
     },function (err, foundUser) {
         if(err){
             res.json({success:false, message:"The user couldn't be found"});
         }else{
-
-            var temp = req.body.cost;
-            console.log(temp);
-            var cost = parseFloat(temp);
-            console.log(temp);
-
-            var spending = new Spending({
+            var newSpending = new Spending({
+                id  : req.body.id,
                 name: req.body.name,
-                description: req.body.description,
-                cost: cost
+                cost: req.body.cost,
+                facebook_id: req.body.facebook_id,
+                house_id: req.body.house_id,
+                created_time: req.body.created_time
             });
 
-            console.log(spending.created_time.getTime());
-            //spending.created_time.setHours(spending.created_time.getHours() - 8800);
-
-            spending.save(function (err) {
-                if(err){
-                    console.log(err);
-                }
+            newSpending.save(function (err) {
+                console.log(err);
             });
-
-            foundUser.spendings.push(spending);
+            foundUser.spendings.push(newSpending);
             foundUser.save();
 
             House.findOne({
-                _id:req.params.hid
+                id:req.params.hid
             }, function (err, foundHouse) {
                 if(err){
                     res.json({success:false, message:"The house couldn't be found"});
                 }else{
-                    foundHouse.spendings.push(spending);
+                    foundHouse.spendings.push(newSpending);
                     foundHouse.save();
                 }
             });
@@ -106,12 +97,23 @@ Router.post("/", function (req,res) {
 
 Router.get("/:sid", function (req,res) {
     Spending.findOne({
-       _id:req.params.sid
+       id:req.params.sid
     },function (err, foundSpending) {
         if(err){
             res.json({success:false, message:"Spending couldn't be found"});
         }else{
             res.json({success:true, data:foundSpending});
+        }
+    });
+});
+
+Router.delete('/:sid', function (req,res) {
+    Spending.remove({id: req.params.sid}, function (err, spending) {
+        if(err){
+            res.json({success:false, message: "Spending couldn't be deleted"});
+        }else{
+            console.log(req.params.sid);
+            res.json({success: true, message: "Spending successfully deleted"});
         }
     });
 });
