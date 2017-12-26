@@ -71,7 +71,8 @@ Router.post("/", function (req,res) {
                 cost: req.body.cost,
                 facebook_id: req.body.facebook_id,
                 house_id: req.body.house_id,
-                created_time: req.body.created_time
+                created_time:req.body.date
+                //created_time: req.body.created_time
             });
 
             newSpending.save(function (err) {
