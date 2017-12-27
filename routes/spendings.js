@@ -5,57 +5,13 @@ var House = require('../models/house');
 var Spending = require('../models/spending');
 
 Router.get("/", function (req,res) {
-
-    var limit = req.query.limit;
-
-    if(limit == 7){
-        var d = new Date();
-        d.setHours(d.getHours() - 168);
-        Spending.find({created_time: {$gte: d}}, function (err, items) {
-            if(err){
-                console.log(err);
-            }
-            else{
-                console.log(items);
-                res.json(items);
-            }
-        });
-    }else if(limit == 30){
-        var d = new Date();
-        d.setHours(d.getHours() - 720);
-        Spending.find({created_time: {$gte: d}}, function (err, items) {
-            if(err){
-                console.log(err);
-            }
-            else{
-                console.log(items);
-                res.json(items);
-            }
-        });
-    }else if(limit == 365){
-        var d = new Date();
-        d.setHours(d.getHours() - 8760);
-        Spending.find({created_time: {$gte: d}}, function (err, items) {
-            if(err){
-                console.log(err);
-            }
-            else{
-                console.log(items);
-                res.json(items);
-            }
-        });
-    }
-
-    else{
         House.findOne({id:req.params.hid}).populate("spendings").exec(function (err,foundHouse) {
             if(err){
                 res.json({success:false, message:"The user couldn't be found"});
             }else{
-                res.json(foundHouse.spendings);
-                //res.json({success:true, message:"Here are your spendings", data:foundHouse.spendings});
+                res.json({success:true, message:"Here are your spendings", data:foundHouse.spendings});
             }
         });
-    }
 });
 
 Router.post("/", function (req,res) {
@@ -71,14 +27,14 @@ Router.post("/", function (req,res) {
                 cost: req.body.cost,
                 facebook_id: req.body.facebook_id,
                 house_id: req.body.house_id,
-                created_time:req.body.date
-                //created_time: req.body.created_time
+                created_time: req.body.created_time
             });
 
             newSpending.save(function (err) {
                 console.log(err);
             });
             foundUser.spendings.push(newSpending);
+            foundUser.balance = foundUser.balance + req.body.cost;
             foundUser.save();
 
             House.findOne({
@@ -114,7 +70,6 @@ Router.delete('/:sid', function (req,res) {
         if(err){
             res.json({success:false, message: "Spending couldn't be deleted"});
         }else{
-            console.log(req.params.sid);
             res.json({success: true, message: "Spending successfully deleted"});
         }
     });

@@ -9,8 +9,7 @@ Router.get("/",function (req,res) {
             res.json({success:false, message:"The user couldn't be found!"});
         }else{
             console.log(foundUser);
-            res.json(foundUser.houses);
-            //res.json({success:true, message:"Here is the house", data:foundUser.houses});
+            res.json({success:true, message:"Here is the house", data:foundUser.houses});
         }
     })
 });
@@ -56,8 +55,7 @@ Router.get("/:hid", function (req,res) {
         if(err){
             res.json({success:false, message:"The house couldn't be found"});
         }else{
-            res.json(foundHouse);
-            //res.json({success:true, message: "The house was found", data: foundHouse});
+            res.json({success:true, message: "The house was found", data: foundHouse});
         }
     });
 });
@@ -70,14 +68,14 @@ Router.post("/:hid", function (req,res) {
             res.json({success:false, message:"The house couldn't be found"});
         }else{
             User.findOne({
-                _id:req.query.member
+                facebook_id:req.body.facebook_id
             },function (err, foundUser) {
                 foundHouse.members.push(foundUser);
                 foundHouse.save();
-                console.log(foundHouse);
+
                 foundUser.houses.push(foundHouse);
                 foundUser.save();
-                console.log(foundUser);
+
                 res.json({success:true, message:"The member has been added to the house"});
             });
         }

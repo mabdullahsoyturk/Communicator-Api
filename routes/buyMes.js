@@ -10,8 +10,7 @@ Router.get('/', function (req,res) {
         if(err){
             res.json({success:false, message:"The user couldn't be found"});
         }else{
-            res.json(foundHouse.buyMes);
-            //res.json({success:true, message:"You got them all tiger", data:foundHouse.buyMes});
+            res.json({success:true, message:"You got them all tiger", data:foundHouse.buyMes});
         }
     });
 });
@@ -41,7 +40,6 @@ Router.delete('/:bmid', function (req,res) {
        if(err){
            res.json({success:false, message: "Buy me couldn't be deleted"});
        }else{
-           console.log(buyMe);
            res.json({success: true, message: "Buy me successfully deleted"});
        }
     });
