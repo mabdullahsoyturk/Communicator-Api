@@ -36,7 +36,7 @@ app.get("/", function (req,res) {
         html: '<b>Hello world?</b>' // html body
     };
 
-    // send mail with defined transport object
+    // send mail with defined transport obje
     transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
             return console.log(error);
