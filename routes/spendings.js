@@ -5,7 +5,7 @@ var House = require('../models/house');
 var Spending = require('../models/spending');
 
 Router.get("/", function (req,res) {
-        House.findOne({id:req.params.hid, facebook_id: req.params.facebook_id}).populate("spendings").exec(function (err,foundHouse) {
+        House.findOne({id:req.params.hid, facebook_id: req.params.fid}).populate("spendings").exec(function (err,foundHouse) {
             if(err){
                 res.json({success:false, message:"The user couldn't be found"});
             }else{
@@ -39,7 +39,7 @@ Router.post("/", function (req,res) {
 
             House.findOne({
                 id:req.params.hid,
-                facebook_id: req.params.facebook_id
+                facebook_id: req.params.fid
             }, function (err, foundHouse) {
                 if(err){
                     res.json({success:false, message:"The house couldn't be found"});
@@ -57,7 +57,7 @@ Router.post("/", function (req,res) {
 Router.get("/:sid", function (req,res) {
     Spending.findOne({
        id:req.params.sid,
-        facebook_id: req.params.facebook_id
+        facebook_id: req.params.fid
     },function (err, foundSpending) {
         if(err){
             res.json({success:false, message:"Spending couldn't be found"});
@@ -68,7 +68,7 @@ Router.get("/:sid", function (req,res) {
 });
 
 Router.delete('/:sid', function (req,res) {
-    Spending.remove({id: req.params.sid, facebook_id: req.params.facebook_id}, function (err, spending) {
+    Spending.remove({id: req.params.sid, facebook_id: req.params.fid}, function (err, spending) {
         if(err){
             res.json({success:false, message: "Spending couldn't be deleted"});
         }else{

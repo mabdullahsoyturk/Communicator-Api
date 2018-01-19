@@ -6,7 +6,7 @@ var House = require('../models/house');
 //Routes for users
 
 Router.get('/', function (req,res) {
-    House.findOne({id:req.params.hid, facebook_id: req.params.facebook_id}).populate("buyMes").exec(function (err,foundHouse) {
+    House.findOne({id:req.params.hid, facebook_id: req.params.fid}).populate("buyMes").exec(function (err,foundHouse) {
         if(err){
             res.json({success:false, message:"The user couldn't be found"});
         }else{
@@ -16,7 +16,7 @@ Router.get('/', function (req,res) {
 });
 
 Router.delete('/', function (req,res) {;
-   BuyMe.remove({house_id:req.params.hid, facebook_id: req.params.facebook_id}, function (err, numberOfDeleted) {
+   BuyMe.remove({house_id:req.params.hid, facebook_id: req.params.fid}, function (err, numberOfDeleted) {
        if(err){
            res.json({success:false, message:"Buy Mes couldn't be deleted"});
        }else{
@@ -26,7 +26,7 @@ Router.delete('/', function (req,res) {;
 });
 
 Router.get('/:bmid', function (req,res) {
-    BuyMe.findOne({_id:req.params.bmid, facebook_id: req.params.facebook_id}, function (err, foundBuyMe) {
+    BuyMe.findOne({_id:req.params.bmid, facebook_id: req.params.fid}, function (err, foundBuyMe) {
         if(err){
             res.json({success:false, message:"The user couldn't be found"});
         }else{
@@ -36,7 +36,7 @@ Router.get('/:bmid', function (req,res) {
 });
 
 Router.delete('/:bmid', function (req,res) {
-    BuyMe.remove({id: req.params.bmid, facebook_id: req.params.facebook_id}, function (err, buyMe) {
+    BuyMe.remove({id: req.params.bmid, facebook_id: req.params.fid}, function (err, buyMe) {
        if(err){
            res.json({success:false, message: "Buy me couldn't be deleted"});
        }else{
@@ -48,7 +48,7 @@ Router.delete('/:bmid', function (req,res) {
 Router.post("/", function (req,res) {
     House.findOne({
         id:req.params.hid,
-        facebook_id: req.params.facebook_id
+        facebook_id: req.params.fid
     },function (err, foundHouse) {
         if(err){
             res.json({success:false, message:"The user couldn't be found"});
