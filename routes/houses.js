@@ -50,7 +50,8 @@ Router.post("/", function (req,res) {
 
 Router.get("/:hid", function (req,res) {
     House.findOne({
-        id:req.params.hid
+        id:req.params.hid,
+        facebook_id: req.params.facebook_id
     },function (err,foundHouse) {
         if(err){
             res.json({success:false, message:"The house couldn't be found"});
@@ -62,7 +63,8 @@ Router.get("/:hid", function (req,res) {
 
 Router.post("/:hid", function (req,res) {
     House.findOne({
-        id:req.params.hid
+        id:req.params.hid,
+        facebook_id: req.params.facebook_id
     },function (err,foundHouse) {
         if(err){
             res.json({success:false, message:"The house couldn't be found"});

@@ -4,7 +4,10 @@ var User = require('../models/user');
 var House = require('../models/house');
 
 Router.get("/",function (req,res) {
-    House.findOne({id:req.params.hid}).populate("members").exec(function (err,foundHouse) {
+    House.findOne({
+        id:req.params.hid,
+        facebook_id: req.params.fid
+    }).populate("members").exec(function (err,foundHouse) {
         if(err){
             res.json({success:false, message:"The user couldn't be found"});
         }else{
@@ -32,8 +35,6 @@ Router.post("/", function (req,res) {
             });
         }
     });
-
-
 });
 
 Router.get("/:hid", function (req,res) {
@@ -60,10 +61,8 @@ Router.post("/:hid", function (req,res) {
             },function (err, foundUser) {
                 foundHouse.members.push(foundUser);
                 foundHouse.save();
-                console.log(foundHouse);
                 foundUser.houses.push(foundHouse);
                 foundUser.save();
-                console.log(foundUser);
                 res.json({success:true, message:"The member has been added to the house"});
             });
         }
