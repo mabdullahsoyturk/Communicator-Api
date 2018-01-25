@@ -30,10 +30,36 @@ Router.put('/:fid', function (req,res) {
            res.json({success:false, message:"The user couldn't be found!"});
        } else{
            foundUser.house_id = req.body.house_id;
+           foundUser.house_id_server = req.body.house_id_server;
+           console.log(req.body.house_id_server);
            foundUser.save();
            res.json({success:true, message:"The user updated"});
        }
     });
+});
+
+Router.put('/:fid/payment', function (req,res) {
+    User.findOne({facebook_id:req.body.facebook_id}, function (err,foundUser) {
+        if(err){
+            res.json({success:false, message:"The user couldn't be found!"});
+        } else{
+            console.log(foundUser);
+            foundUser.balance = foundUser.balance + req.body.how_much;
+            foundUser.save();
+        }
+    });
+
+    User.findOne({facebook_id: req.body.to}, function (err, userToPay) {
+       if(err){
+           res.json({success:false, message:"The user couldn't be found!"});
+       }else{
+           console.log(userToPay);
+           userToPay.balance = userToPay.balance - req.body.how_much;
+           userToPay.save();
+       }
+    });
+
+    res.json({success:true, message:"The payment has been made"});
 });
 
 module.exports = Router;

@@ -24,7 +24,7 @@ Router.post("/", function (req,res) {
 
             var house = new House({
                 name: req.body.name,
-                id  : req.body.id,
+                id : req.body.id,
                 facebook_id  : req.body.facebook_id,
                 created_time : req.body.created_time
             });
@@ -37,7 +37,7 @@ Router.post("/", function (req,res) {
                 }
             });
 
-            foundUser.house_id = req.body.house_id;
+            foundUser.house_id = req.body.id;
 
             foundUser.houses.push(house);
             foundUser.save();
@@ -50,8 +50,7 @@ Router.post("/", function (req,res) {
 
 Router.get("/:hid", function (req,res) {
     House.findOne({
-        id:req.params.hid,
-        facebook_id: req.params.fid
+        _id:req.params.hid
     },function (err,foundHouse) {
         if(err){
             res.json({success:false, message:"The house couldn't be found"});
@@ -63,8 +62,7 @@ Router.get("/:hid", function (req,res) {
 
 Router.post("/:hid", function (req,res) {
     House.findOne({
-        id:req.params.hid,
-        facebook_id: req.params.fid
+        _id:req.params.hid
     },function (err,foundHouse) {
         if(err){
             res.json({success:false, message:"The house couldn't be found"});

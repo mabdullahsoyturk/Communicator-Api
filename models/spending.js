@@ -6,6 +6,7 @@ var SpendingSchema = new mongoose.Schema({
     name        : String,
     cost        : Number,
     facebook_id : String,
+    facebook_ids: [],
     house_id    : String,
     created_time: String
 });

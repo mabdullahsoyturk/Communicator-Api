@@ -5,7 +5,7 @@ var House = require('../models/house');
 var Spending = require('../models/spending');
 
 Router.get("/", function (req,res) {
-        House.findOne({id:req.params.hid, facebook_id: req.params.fid}).populate("spendings").exec(function (err,foundHouse) {
+        House.findOne({_id:req.params.hid}).populate("spendings").exec(function (err,foundHouse) {
             if(err){
                 res.json({success:false, message:"The user couldn't be found"});
             }else{
@@ -26,6 +26,7 @@ Router.post("/", function (req,res) {
                 name: req.body.name,
                 cost: req.body.cost,
                 facebook_id: req.body.facebook_id,
+                facebook_ids: req.body.facebook_ids,
                 house_id: req.body.house_id,
                 created_time: req.body.created_time
             });
@@ -33,13 +34,28 @@ Router.post("/", function (req,res) {
             newSpending.save(function (err) {
                 console.log(err);
             });
+
+            var ids = req.body.facebook_ids;
+
+            var index;
+            for(index = 0; index < ids.length; index++){
+                User.findOne({
+                    facebook_id:ids[index]
+                }, function (err, singleUser) {
+                    if(err){
+                        res.json({success:false, message:"No such member"});
+                    }else{
+                        singleUser.balance = singleUser.balance + (req.body.cost / ids.length);
+                        singleUser.save();
+                    }
+                })
+            }
+
             foundUser.spendings.push(newSpending);
-            foundUser.balance = foundUser.balance + req.body.cost;
             foundUser.save();
 
             House.findOne({
-                id:req.params.hid,
-                facebook_id: req.params.fid
+                _id:req.params.hid
             }, function (err, foundHouse) {
                 if(err){
                     res.json({success:false, message:"The house couldn't be found"});
@@ -56,8 +72,7 @@ Router.post("/", function (req,res) {
 
 Router.get("/:sid", function (req,res) {
     Spending.findOne({
-       id:req.params.sid,
-        facebook_id: req.params.fid
+       id:req.params.sid
     },function (err, foundSpending) {
         if(err){
             res.json({success:false, message:"Spending couldn't be found"});
@@ -67,14 +82,42 @@ Router.get("/:sid", function (req,res) {
     });
 });
 
+Router.put("/:sid", function (req,res) {
+    Spending.findOne({id:req.params.sid}, function(err, foundSpending) {
+        if(err){
+            res.json({success:false, message: "Spending couldn't be deleted"});
+        }else{
+            var index;
+
+            console.log(foundSpending);
+
+            var ids = foundSpending.facebook_ids;
+
+            for(index = 0; index < ids.length; index++){
+                User.findOne({
+                    facebook_id:ids[index]
+                }, function (err, singleUser) {
+                    singleUser.balance = singleUser.balance - (foundSpending.cost / ids.length);
+                    singleUser.save();
+                });
+            }
+
+            res.json({success:true, message:"Balances are updated"});
+        }
+    });
+
+});
+
 Router.delete('/:sid', function (req,res) {
-    Spending.remove({id: req.params.sid, facebook_id: req.params.fid}, function (err, spending) {
+
+    Spending.remove({id: req.params.sid}, function (err, foundSpending) {
         if(err){
             res.json({success:false, message: "Spending couldn't be deleted"});
         }else{
             res.json({success: true, message: "Spending successfully deleted"});
         }
     });
+
 });
 
 module.exports = Router;

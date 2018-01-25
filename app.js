@@ -10,42 +10,42 @@ var express = require('express'),
     members    = require('./routes/members'),
     signup     = require('./routes/signup');
 
-//mongoose.connect("mongodb://localhost/houseassistant");
-mongoose.connect('mongodb://muhammet:123@ds121716.mlab.com:21716/communicator');
+mongoose.connect("mongodb://localhost/houseassistant");
+//mongoose.connect('mongodb://muhammet:123@ds121716.mlab.com:21716/communicator');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.get("/", function (req,res) {
-
-    let transporter = nodemailer.createTransport({
-        service: 'Hotmail',
-        auth: {
-            user: "muhammetsoyturk@hotmail.com", // generated ethereal user
-            pass: "Hotmail271484060."  // generated ethereal password
-        }
-    });
-
-    // setup email data with unicode symbols
-    let mailOptions = {
-        from: 'muhammetsoyturk@hotmail.com', // sender address
-        to: 'muhammetabdullahsoyturk@gmail.com', // list of receivers
-        subject: 'Communicator Confirmation Mail', // Subject line
-        text: 'Hello world?', // plain text body
-        html: '<b>Hello world?</b>' // html body
-    };
-
-    // send mail with defined transport obje
-    transporter.sendMail(mailOptions, function(error, info) {
-        if (error) {
-            return console.log(error);
-        }
-        console.log('Message sent: %s', info.messageId);
-});
-
-   res.send("Works");
-});
+// app.get("/", function (req,res) {
+//
+//     let transporter = nodemailer.createTransport({
+//         service: 'Hotmail',
+//         auth: {
+//             user: "muhammetsoyturk@hotmail.com", // generated ethereal user
+//             pass: "Hotmail271484060."  // generated ethereal password
+//         }
+//     });
+//
+//     // setup email data with unicode symbols
+//     let mailOptions = {
+//         from: 'muhammetsoyturk@hotmail.com', // sender address
+//         to: 'muhammetabdullahsoyturk@gmail.com', // list of receivers
+//         subject: 'Communicator Confirmation Mail', // Subject line
+//         text: 'Hello world?', // plain text body
+//         html: '<b>Hello world?</b>' // html body
+//     };
+//
+//     // send mail with defined transport obje
+//     transporter.sendMail(mailOptions, function(error, info) {
+//         if (error) {
+//             return console.log(error);
+//         }
+//         console.log('Message sent: %s', info.messageId);
+// });
+//
+//    res.send("Works");
+// });
 
 app.use("/signup", signup);  //Sign up route without middleware for token check since the user doesn't sign in yet.
 /////////////////////////////////////////AUTH ROUTES////////////////////////////////////////////////////////////////////

@@ -1,8 +1,20 @@
 var express = require('express');
-var app = express();
+var Router  = express.Router({mergeParams:true});
 var User = require('../models/user');
 
-app.post("/", function (req,res) {
+Router.post("/check", function (req,res) {
+    User.findOne({facebook_id:req.body.facebook_id}, function (err,user) {
+       if(err){
+           res.json({success:false, message:"Oopppsy. Error"});
+       }else if(user){
+           res.json({success:true, message:"Here is the user", data:user});
+       }else{
+           res.json({success:false, message:"The user is not exist"});
+       }
+   });
+});
+
+Router.post("/", function (req,res) {
     User.findOne({facebook_id:req.body.facebook_id}, function (err,user) { //look if mail exists
         if(err){
             res.json({success:false, message:"The user couldn't be added"});
@@ -33,4 +45,4 @@ app.post("/", function (req,res) {
 });
 
 
-module.exports = app;
+module.exports = Router;
