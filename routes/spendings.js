@@ -35,6 +35,8 @@ Router.post("/", function (req,res) {
                 console.log(err);
             });
 
+            foundUser.balance = foundUser.balance + req.body.cost;
+
             var ids = req.body.facebook_ids;
 
             var index;
@@ -45,7 +47,7 @@ Router.post("/", function (req,res) {
                     if(err){
                         res.json({success:false, message:"No such member"});
                     }else{
-                        singleUser.balance = singleUser.balance + (req.body.cost / ids.length);
+                        singleUser.balance = singleUser.balance - (req.body.cost / ids.length);
                         singleUser.save();
                     }
                 })
@@ -87,9 +89,18 @@ Router.put("/:sid", function (req,res) {
         if(err){
             res.json({success:false, message: "Spending couldn't be deleted"});
         }else{
-            var index;
 
-            console.log(foundSpending);
+            User.findOne({
+                facebook_id:req.params.fid
+            },function (err, foundUser) {
+                if(err){
+                    res.json({success:false, message:"The user couldn't be found"});
+                }else{
+                    foundUser.balance = foundUser.balance - foundSpending.cost;
+                }
+            });
+
+            var index;
 
             var ids = foundSpending.facebook_ids;
 
@@ -97,7 +108,7 @@ Router.put("/:sid", function (req,res) {
                 User.findOne({
                     facebook_id:ids[index]
                 }, function (err, singleUser) {
-                    singleUser.balance = singleUser.balance - (foundSpending.cost / ids.length);
+                    singleUser.balance = singleUser.balance + (foundSpending.cost / ids.length);
                     singleUser.save();
                 });
             }
