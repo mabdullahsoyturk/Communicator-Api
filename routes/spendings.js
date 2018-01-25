@@ -35,8 +35,6 @@ Router.post("/", function (req,res) {
                 console.log(err);
             });
 
-            foundUser.balance = foundUser.balance + req.body.cost;
-
             var ids = req.body.facebook_ids;
 
             var index;
@@ -47,14 +45,16 @@ Router.post("/", function (req,res) {
                     if(err){
                         res.json({success:false, message:"No such member"});
                     }else{
-                        singleUser.balance = singleUser.balance - (req.body.cost / ids.length);
+                        if(singleUser.facebook_id == foundUser.facebook_id){
+                            singleUser.balance = singleUser.balance + (req.body.cost - (req.body.cost / ids.length));
+                            singleUser.spendings.push(newSpending);
+                        }else{
+                            singleUser.balance = singleUser.balance - (req.body.cost / ids.length);
+                        }
                         singleUser.save();
                     }
                 })
             }
-
-            foundUser.spendings.push(newSpending);
-            foundUser.save();
 
             House.findOne({
                 _id:req.params.hid
