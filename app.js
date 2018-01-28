@@ -2,7 +2,6 @@ var express = require('express'),
     app     = express(),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
-    nodemailer = require('nodemailer'),
     users      = require('./routes/users'),
     houses     = require('./routes/houses'),
     spendings  = require('./routes/spendings'),
@@ -18,32 +17,6 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get("/", function (req,res) {
-
-    let transporter = nodemailer.createTransport({
-        service: 'Hotmail',
-        auth: {
-            user: "muhammetsoyturk@hotmail.com", // generated ethereal user
-            pass: "Hotmail271484060."  // generated ethereal password
-        }
-    });
-
-    // setup email data with unicode symbols
-    let mailOptions = {
-        from: 'muhammetsoyturk@hotmail.com', // sender address
-        to: 'muhammetabdullahsoyturk@gmail.com', // list of receivers
-        subject: 'Communicator Confirmation Mail', // Subject line
-        text: 'Hello world?', // plain text body
-        html: '<b>Hello world?</b>' // html body
-    };
-
-    // send mail with defined transport obje
-    transporter.sendMail(mailOptions, function(error, info) {
-        if (error) {
-            return console.log(error);
-        }
-        console.log('Message sent: %s', info.messageId);
-});
-
    res.send("Works");
 });
 
