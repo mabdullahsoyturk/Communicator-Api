@@ -13,6 +13,7 @@ Communicator-Api/
     routes/            # Contains routers for rest api.
     app.js             # Main entry point for the entire application.
     package.json       # For dependency management.
+```
 
 ## MIT License
 
